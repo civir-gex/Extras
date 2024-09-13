@@ -1,0 +1,47 @@
+Personalizar la terminal de comandos
+
+$ sudo apt-get install tilix zsh
+
+Dejar por DEFECTO la shell de bash 
+
+$ chsh -s $(which bash)
+
+Dejar por DEFECTO la shell de zsh
+
+$ chsh -s $(which zsh)
+
+Para cambiar entre bash y zsh en el momento
+
+$ exec bash
+
+$ exec zsh
+
+Ahora, puedes ponerle funcionalidades y colores con OH-MY-ZSH
+
+$ sh-c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+
+$ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+**lo sig puede cambiarse con un sed
+$ vim ~/.zshrc
+$ ZSH_THEME="powerlevel10k/powerlevel10k"
+
+Puedes incluir estas fuentes 
+
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+sudo mv *.ttf /usr/share/fonts/
+
+aplica los cambios con 
+
+$ source ~/.zshrc
+
+Nos va a salir el wizard de powerlevel10k para configurar la terminal como quieras, simplemente sigue los pasos.
+
+Para volver a configurar el tema Powerlevel10k desde el principio en caso de que quieras cambiar algo:
+
+$ p10k configure
+
+Fuente: https://platzi.com/clases/2292-terminal/37393-personalizar-la-terminal-de-comandos/#:~:text=C%C3%B3mo%20personalizar%20la%20terminal%20de%20comandos%201%201.,Level%20Vamos%20a%20instalarle%20un%20tema%20%28powerLevel10K%29%3A%20
