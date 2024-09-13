@@ -1,0 +1,18 @@
+
+Crea un nuevo repositorio desde la linea de comando
+
+echo "# Extras" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:civir-gex/Extras.git
+git push -u origin main
+
+…o puedes subir un repositorio existente 
+
+git remote add origin git@github.com:civir-gex/Extras.git
+git branch -M main
+git push -u origin main
+
+**El repositorio debera estar creado en hithub
