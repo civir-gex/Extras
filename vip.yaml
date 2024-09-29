@@ -3,6 +3,7 @@ kind: ServiceAccount
 metadata:
   name: kube-vip
   namespace: kube-system
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -26,6 +27,7 @@ rules:
   - apiGroups: ["discovery.k8s.io"]
     resources: ["endpointslices"]
     verbs: ["list", "get", "watch", "update"]
+
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -39,6 +41,7 @@ subjects:
   - kind: ServiceAccount
     name: kube-vip
     namespace: kube-system
+
 ---
 apiVersion: apps/v1
 kind: DaemonSet
