@@ -41,7 +41,7 @@ spec:
   selector:
     k8s-app: skooner
   type: LoadBalancer
-  loadBalancerIP: 10.177.73.116
+  # loadBalancerIP: 10.177.73.116
 
 ---
 apiVersion: v1
