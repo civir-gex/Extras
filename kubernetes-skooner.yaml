@@ -34,6 +34,9 @@ apiVersion: v1
 metadata:
   name: skooner
   namespace: kube-system
+  annotations:
+    metallb.universe.tf/address-pool: metallb-address-cluster
+    metallb.universe.tf/allow-shared-ip: "web-server-svc"
 spec:
   ports:
     - port: 80
@@ -41,7 +44,7 @@ spec:
   selector:
     k8s-app: skooner
   type: LoadBalancer
-  # loadBalancerIP: 10.177.73.116
+  loadBalancerIP: 172.16.1.10
 
 ---
 apiVersion: v1

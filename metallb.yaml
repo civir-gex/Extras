@@ -2026,15 +2026,15 @@ spec:
   addresses:
     - 172.16.1.200-172.16.1.240
 ---
-# apiVersion: metallb.io/v1beta1
-# kind: IPAddressPool
-# metadata:
-#   name: metallb-address-cluster
-#   namespace: metallb-system
-# spec:
-#   addresses:
-#     - 10.177.73.116/32
-#   autoAssign: false
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: metallb-address-cluster
+  namespace: metallb-system
+spec:
+  addresses:
+    - 172.16.1.10/32
+  autoAssign: false
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement

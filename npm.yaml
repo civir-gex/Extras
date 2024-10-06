@@ -1,0 +1,122 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: npm
+
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: npm-storage
+provisioner: nfs-storage
+parameters:
+  storageaccounttype: Standard_LRS
+  kind: Managed
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: npm-data
+  namespace: npm
+spec:
+  storageClassName: npm-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: npm-letsencrypt
+  namespace: npm
+spec:
+  storageClassName: npm-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: npm
+  namespace: npm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: npm
+  template:
+    metadata:
+      labels:
+        app: npm
+    spec:
+      volumes:
+        - name: npm-data
+          persistentVolumeClaim:
+            claimName: npm-data
+        - name: npm-letsencrypt
+          persistentVolumeClaim:
+            claimName: npm-letsencrypt
+      containers:
+        - name: npm
+          image: jc21/nginx-proxy-manager:latest
+          ports:
+            - containerPort: 81
+            - containerPort: 80
+            - containerPort: 443
+          volumeMounts:
+            - mountPath: "/data"
+              name: npm-data
+            - mountPath: "/etc/letsencrypt"
+              name: npm-letsencrypt
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: npm-proxy
+  namespace: npm
+  annotations:
+    #metallb.universe.tf/address-pool: metallb-address-pool
+    metallb.universe.tf/allow-shared-ip: "web-server-svc"
+spec:
+  ports:
+    - name: proxy
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    - name: proxy-ssl
+      port: 443
+      protocol: TCP
+      targetPort: 443
+  selector:
+    app: npm
+  type: LoadBalancer
+  loadBalancerIP: 172.16.1.200
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: npm-admin-ui
+  namespace: npm
+  annotations:
+    # metallb.universe.tf/address-pool: metallb-address-pool
+    metallb.universe.tf/allow-shared-ip: "web-server-svc"
+spec:
+  ports:
+    - name: admin-ui
+      port: 81
+      protocol: TCP
+      targetPort: 81
+  selector:
+    app: npm
+  type: LoadBalancer
+  loadBalancerIP: 172.16.1.200
